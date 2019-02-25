@@ -61,7 +61,7 @@ appendMsg() {
         cat $fileName
         echo
     else
-        echo "\n$fileName does not exist."
+        echo -e "\n$fileName does not exist."
         echo
     fi
 }
@@ -81,8 +81,8 @@ parseDate() {
     echo -e "Current time is: $4\n"
 }
 
-while true; do
 echo
+while true; do
 read -p "Enter your choice " choice
 case "$choice" in 
     1)

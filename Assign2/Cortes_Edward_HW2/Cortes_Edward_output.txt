@@ -1,0 +1,60 @@
+CS 4350 --    Unix System Programming
+Name:         Edward Cortes
+ID Number:    A04196581
+Assignment:   2
+Due Date:     2/27/19
+
+The function of this script is to:
+	 1.  Make directory by checking existence
+	 2.  Test if File Exist. If it exists then Read the File,
+	     display number of words , number of lines in the file, and its contents.
+	     Display a message it does not exist
+	 3.  Append “Learning Scripts and Shell Programming “ to an existing File.
+	     Display a message if it does not exist
+	 4.  Delete an existing file
+	 5.  Parse Current Date
+	 9.  Exit
+
+
+Enter your choice 1
+
+Enter the name of the directory: images
+
+Directory created: images
+
+Enter your choice 2
+
+Enter file name: test.txt
+
+Number of lines and words: 2 9
+
+File content
+This is a test file
+I have 2 lines
+
+Enter your choice 3
+
+Enter file name: test.txt
+
+File content before append
+This is a test file
+I have 2 lines
+
+File content after append
+This is a test file
+I have 2 lines
+Learning Scripts and Shell Programming
+
+Enter your choice 4
+
+Enter file name to be deleted: test.txt
+
+test.txt has been deleted
+
+Enter your choice 5
+
+Current date is: 22-Feb-2019
+Current time is: 09:47:40
+
+Enter your choice 9
+exiting..

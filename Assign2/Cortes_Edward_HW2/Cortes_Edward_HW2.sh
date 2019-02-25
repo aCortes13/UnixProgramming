@@ -2,20 +2,20 @@
 clear
 echo "CS 4350 --    Unix System Programming"
 echo "Name:         Edward Cortes"
-echo "ID Number:    A04196581"
+echo "Serial:       12"
 echo "Assignment:   2"
 echo "Due Date:     2/27/19"
 echo 
 echo "The function of this script is to:"
-echo -e "\t 1. Make directory by checking existence"
-echo -e "\t 2. Test if File Exist. If it exists then Read the File,"
-echo -e "\t \tdisplay number of words , number of lines in the file, and its contents." 
-echo -e "\t \tDisplay a message it does not exist"
-echo -e "\t 3. Append “Learning Scripts and Shell Programming “ to an existing File." 
-echo -e "\t\tDisplay a message if it does not exist"
-echo -e "\t 4. Delete an existing file"
-echo -e "\t 5. Parse Current Date"
-echo -e "\t 9. Exit"
+echo -e "\t 1.  Make directory by checking existence"
+echo -e "\t 2.  Test if File Exist. If it exists then Read the File,"
+echo -e "\t     display number of words , number of lines in the file, and its contents." 
+echo -e "\t     Display a message it does not exist"
+echo -e "\t 3.  Append “Learning Scripts and Shell Programming “ to an existing File." 
+echo -e "\t     Display a message if it does not exist"
+echo -e "\t 4.  Delete an existing file"
+echo -e "\t 5.  Parse Current Date"
+echo -e "\t 9.  Exit"
 echo 
 
 makeDir() {
@@ -40,7 +40,7 @@ readFile() {
         fileInfo=($(wc $1))    
         echo "Number of lines and words: ${fileInfo[0]} ${fileInfo[1]}"
         echo
-        echo "File content"
+        echo "File content:"
         cat $1
         echo
     else
@@ -54,10 +54,10 @@ appendMsg() {
     fileName=$1 && shift
     arr=($@)
     if [ -f $fileName ]; then
-        echo -e "\nFile content before append"
+        echo -e "\nFile content before append:"
         cat $fileName
         echo ${arr[@]} >> $fileName
-        echo -e "\nFile content after append"
+        echo -e "\nFile content after append:"
         cat $fileName
         echo
     else
@@ -112,13 +112,14 @@ case "$choice" in
         parseDate
         ;;
     9)
-        echo "exiting.."
+        echo -e "\nexiting..\n"
+        echo "Edward Anthony Cortes 2-27-2019"
         break
         ;;
     *)
         echo "Incorrect Choice, Try again"
         continue
         ;;
-esac 
+esac
 done
 
