@@ -188,7 +188,7 @@ _Bool encrypt(char crypto[2][200]) {
     crypto[1][i] = ascii[plainIndex + key];
   }
 
-  printf("Number of Capital Letters: %d\n", upper);
+  printf("\nNumber of Capital Letters: %d\n", upper);
   printf("Number of Lower Case Letters: %d\n", lower);
   printf("Number of digits: %d\n", digit);
   printf("Number of symbols: %d\n", symbol);
@@ -197,7 +197,12 @@ _Bool encrypt(char crypto[2][200]) {
 
   index = 0;
   while ((c = crypto[0][index]) != '\0') {
-    printf("%c", c);
+    if (evalisupper(c))
+      printf("%c", c + 32);
+    else if (evalislower(c))
+      printf("%c", c - 32);
+    else 
+      printf("%c", c);
     index++;
   } 
   printf("\n");
@@ -280,7 +285,7 @@ _Bool decrypt(char crypto[2][200]) {
     crypto[1][i] = ascii[cipherIndex - key];
   }
 
-  printf("Number of Capital Letters: %d\n", upper);
+  printf("\nNumber of Capital Letters: %d\n", upper);
   printf("Number of Lower Case Letters: %d\n", lower);
   printf("Number of digits: %d\n", digit);
   printf("Number of symbols: %d\n", symbol);
@@ -289,7 +294,12 @@ _Bool decrypt(char crypto[2][200]) {
 
   index = 0;
   while ((c = crypto[0][index]) != '\0') {
-    printf("%c", c);
+    if (evalisupper(c))
+      printf("%c", c + 32);
+    else if (evalislower(c))
+      printf("%c", c - 32);
+    else 
+      printf("%c", c);
     index++;
   } 
   printf("\n");
