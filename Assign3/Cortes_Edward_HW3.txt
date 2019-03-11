@@ -1,3 +1,39 @@
+===============
+Sample Output
+===============
+
+Welcome to cryptography
+
+What would you like to do to a message? (encrypt, decrypt, exit)
+Enter your choice: encrypt
+
+Enter your message:
+HG
+
+Enter your Key (1-93)
+3
+
+Number of Capital Letters: 2
+Number of Lower Case Letters: 0
+Number of digits: 0
+Number of symbols: 0
+Number of characters in the message: 2
+converting letters: hg
+
+Your encrypted message is: KJ
+
+Concatenation of original and encrypted text: HGKJ
+
+What would you like to do to a message? (encrypt, decrypt, exit)
+Enter your choice: exit
+
+Anthony Security Systems
+3-27-2019
+
+================
+Source Code
+================
+
 /**************************************************
  * Name: Edward Anthony Cortes
  * Serial: 12
