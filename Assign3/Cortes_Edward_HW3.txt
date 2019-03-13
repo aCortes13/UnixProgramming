@@ -155,6 +155,8 @@ int validate(char message[]) {
   _Bool dec = 1;
   _Bool xit = 1;
 
+  if (evalisupper(message[x])) message[x] += 32;
+
   while (message[x] != '\n' && x < 4) {
     if (message[x] != encrypt[x]) { 
       enc = 0;
