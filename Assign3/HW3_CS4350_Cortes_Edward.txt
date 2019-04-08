@@ -1,39 +1,3 @@
-===============
-Sample Output
-===============
-
-Welcome to cryptography
-
-What would you like to do to a message? (encrypt, decrypt, exit)
-Enter your choice: encrypt
-
-Enter your message:
-HG
-
-Enter your Key (1-93)
-3
-
-Number of Capital Letters: 2
-Number of Lower Case Letters: 0
-Number of digits: 0
-Number of symbols: 0
-Number of characters in the message: 2
-converting letters: hg
-
-Your encrypted message is: KJ
-
-Concatenation of original and encrypted text: HGKJ
-
-What would you like to do to a message? (encrypt, decrypt, exit)
-Enter your choice: exit
-
-Anthony Security Systems
-3-27-2019
-
-================
-Source Code
-================
-
 /**************************************************
  * Name: Edward Anthony Cortes
  * Serial: 12
@@ -44,7 +8,7 @@ Source Code
 #include<stdio.h>
 
 /*
- * Create helper functions
+ * Creating helper functions
  */
 
 char ascii[94];
@@ -54,7 +18,7 @@ int digit = 0;
 int symbol = 0;
 int chars = 0;
 
-// Locate index of a char on the "new" ascii table 
+// Locates the index of a character on the "new" ascii table 
 int findIndexAscii(char c) {
   for (int x = 0; x < 94; x++) {
     if (c == ascii[x]) return x;
@@ -62,7 +26,7 @@ int findIndexAscii(char c) {
   return -1;
 }
 
-// Flush the crypto array with \0 to clear after use
+// Clears out the array
 void cryptoFlush(char arr[2][200]) {
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 200; j++) {
@@ -72,6 +36,8 @@ void cryptoFlush(char arr[2][200]) {
 }
 
 // Flush stdin
+//  When using scan() the characters and \n characters are left on the buffer
+//  Use this to get rid of those characters and avoid unwanted input 
 void stdinFlush() {
   int c;
   while((c = getchar()) != '\n' && c != EOF);
@@ -95,7 +61,15 @@ _Bool evalislower(char input) {
   return 0;
 }
 
-// generates the new ascii table according to gholoom's requirements
+// Return true if char is not upper, lower, or digit
+_Bool evalissymbol(char input) {
+  if (!evalisdigit(input) && !evalisupper(input) && !evalislower(input)) {
+    return 1;
+  }
+  return 0;
+}
+
+// generates the ascii array according to gholoom's requirements
 void generateAscii(char ascii[]) {
   char c = 'A';
   int index = 0;
@@ -144,7 +118,9 @@ void generateAscii(char ascii[]) {
   }
 }
 
-// menu input validation, returns -1 if no possible choice for input
+// input validation
+//    returns -1 if no possible choice for input
+//    used to verify a user's menu choices
 int validate(char message[]) {
   const char encrypt[] = "encrypt";
   const char decrypt[] = "decrypt";
@@ -183,16 +159,27 @@ _Bool encrypt(char crypto[2][200], int key) {
   for (int i = 0; i < chars; i++) {
     char plaintxt = crypto[0][i];
     int plainIndex;
-
+    
+    // error thrown if character is not in the created ascii table
+    // I.E. NO SPACES ARE ALLOWED IN THE MESSAGE
     if ((plainIndex = findIndexAscii(plaintxt)) == -1) {
       puts("ERROR finding index");
       cryptoFlush(crypto);
       return 0;
     }
-
+    
+    // Don't encrypt symbols
+    if (evalissymbol(plaintxt)) {
+      crypto[1][i] = ascii[plainIndex];
+      continue;
+    }
+    
+    // Make sure we dont exceed array bounds
     if ((plainIndex + key) > 93) {
       plainIndex -= 94;
     }
+
+    // Store encrypted text
     crypto[1][i] = ascii[plainIndex + key];
   }
   return 1;
@@ -207,19 +194,27 @@ _Bool decrypt(char crypto[2][200], int key) {
     char cipherText = crypto[0][i];
     int cipherIndex;
 
+    // error thrown if character is not in the created ascii table
+    // I.E. NO SPACES ARE ALLOWED IN THE MESSAGE
     if ((cipherIndex = findIndexAscii(cipherText)) == -1) {
       puts("Error finding index\n");
       cryptoFlush(crypto);
       return 0;
     }
 
+    // Dont encrypt symbols 
+    if (evalissymbol(cipherText)) {
+      crypto[1][i] = ascii[cipherIndex];
+      continue;
+    }
+
+    // Make sure we dont exceed array bounds
     if ((cipherIndex - key) < 0) {
       cipherIndex += 94;
     }
+    // Store decrypted text 
     crypto[1][i] = ascii[cipherIndex - key];
   }
-
-
   return 1;
 }
 
@@ -230,19 +225,21 @@ int main() {
   puts("Welcome to cryptography\n");
   
   while (1) {
-     int i = 0;
+    int i = 0;
 
     puts("What would you like to do to a message? (encrypt, decrypt, exit)");
     printf("Enter your choice: ");
 
+    // Read user choice char by char and change to lowercase 
     while ((c = getchar()) != '\n') {
       if (evalisupper(c)) {
-        c += 32; // tolower()
+        c += 32; // this is tolower()
       }
       response[i] = c;
       i++;
     }
 
+    // Verify that user's choice is valid 
     int choice = validate(response);
 
     if (choice == -1) {
@@ -250,13 +247,14 @@ int main() {
       continue;
     }
 
+    // Encrypt chosen
     if (choice == 1) {
       int key = -1;
+      int index = 0;
 
       puts("\nEnter your message: ");
 
-      int index = 0;
-
+      // Perform analysys of user message while reading message
       while ((c = getchar()) != '\n') {
         if (evalisdigit(c)) ++digit;
         else if (evalisupper(c)) ++upper;
@@ -269,7 +267,7 @@ int main() {
 
       crypto[0][index] = '\0';
 
-      if (crypto[0][0] == '\0') {
+      if (crypto[0][0] == '\0') { // If message empty
         puts("\nInvalid Message\n");
         continue;
       }
@@ -278,6 +276,7 @@ int main() {
       scanf("%d", &key);
       stdinFlush();
 
+      // Check key values 
       if (key < 1 || key > 93) {
         puts("\nInvalid key\n");
         return 0;
@@ -285,7 +284,7 @@ int main() {
 
       if (!encrypt(crypto, key)) { continue; }
 
-
+      // Print statistics 
       printf("\nNumber of Capital Letters: %d\n", upper);
       printf("Number of Lower Case Letters: %d\n", lower);
       printf("Number of digits: %d\n", digit);
@@ -329,6 +328,7 @@ int main() {
       cryptoFlush(crypto);
     }
 
+    // Decrypt chosen 
     if (choice == 2) {
       int key = -1;
 
@@ -341,7 +341,8 @@ int main() {
       }
 
       puts("\nEnter your message: ");
-
+      
+      // get char information while reading in chars 
       int index = 0;
       while ((c = getchar()) != '\n') {
         if (evalisdigit(c)) ++digit;
@@ -355,6 +356,7 @@ int main() {
 
       crypto[0][index] = '\0';
 
+      // if message empty
       if (crypto[0][0] == '\0') {
         puts("\nInvalid Message\n");
         continue;
@@ -362,6 +364,7 @@ int main() {
 
       if (!decrypt(crypto, key)) { continue; }
 
+      // show statistics
       printf("\nNumber of Capital Letters: %d\n", upper);
       printf("Number of Lower Case Letters: %d\n", lower);
       printf("Number of digits: %d\n", digit);
@@ -405,6 +408,7 @@ int main() {
       cryptoFlush(crypto);
     }
 
+    // exit
     if (choice == 3) { break; }
 
   }

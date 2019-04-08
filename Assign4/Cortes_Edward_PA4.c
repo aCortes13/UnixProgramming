@@ -62,6 +62,7 @@ int main() {
   }
   
   // file exists, we can continue 
+  printf("This program written by Anthony Cortes\n\n");
   menuMessage();
   
   // variables to store the input data 
@@ -89,7 +90,6 @@ int main() {
   char line[256];
   while (fscanf(fp, "%d %d %d %d %d %d %d", &year, &num1, &num2, &num3, &num4, &num5, &num6) != EOF) {
     int yearAccess = year - 1992;
-    totalInts++;
 
     if (numCount[num1 - 1].num == num1) {
       numCount[num1 -1].freq += 1;
@@ -183,7 +183,7 @@ int main() {
 
   printf("The MOST frequent Numbers Drawn in the Texas LOTTO Game from Highest to Lowest [1 - 27] :-\n");
   printf("Freq. -> No");
-  for (int i = 1; i < 28; i++) { printf("%4d ", i); }
+  for (int i = 0; i < 27; i++) { printf("%4d ", numCount[i].num); }
   printf("\n");
 
   // for correct formatting
@@ -196,7 +196,7 @@ int main() {
 
   printf("The MOST frequent Numbers Drawn in the Texas LOTTO Game from Highest to Lowest [28 - 54] :-\n");
   printf("Freq. -> No");
-  for (int i = 28; i < 55; i++) { printf("%4d ", i); }
+  for (int i = 27; i < 54; i++) { printf("%4d ", numCount[i].num); }
   printf("\n");
 
   // for correct formatting
@@ -207,6 +207,7 @@ int main() {
   }
   printf("\n\n");
 
+  printf("Total integers read: %d\n", totalInts);
   fclose(fp);
   return 0;  
 }
