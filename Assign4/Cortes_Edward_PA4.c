@@ -9,16 +9,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+const char FILENAME[] = "lottofile.txt";
+
+// this struct will be used to hold the value and it's frequency
 struct Nums {
   int num;
   int freq;
 };
 
+// this struct will be used to count the frequency of lotto numbers for each year
 struct Years {
   int year;
   struct Nums num[54];
 };
 
+// compare function for qsort -- implemented in descending order
 int cmpfunc (const void *a, const void *b) {
   const struct Nums *numa = a;
   const struct Nums *numb = b;
@@ -30,6 +35,8 @@ int cmpfunc (const void *a, const void *b) {
   else
     return 0;
 }
+
+// opening message
 void menuMessage() {
   printf("The function of this program is to find the frequency\nof each number that has been drawn in the Texas lotto game.\nThe program\n");
   printf("  1. Calculates and displays the frequency of drawn numbers\n");
@@ -41,14 +48,13 @@ void menuMessage() {
   printf("  4. Displays total number of integers in the entire file.\n\n");
 }
 
+// initialized the num struct array 
 void initNumStruct(struct Nums arr[]) {
   for (int i = 0; i < 54; i++) {
     arr[i].num = i + 1;
     arr[i].freq = 0;
   }
 }
-
-const char FILENAME[] = "lottofile.txt";
 
 int main() {
   // pointer for the file 
@@ -86,7 +92,8 @@ int main() {
     yearCount[i].year = 1992 + i;
     initNumStruct(yearCount[i].num);
   }
-
+  
+  // read in each line of the file and store to the correct array
   char line[256];
   while (fscanf(fp, "%d %d %d %d %d %d %d", &year, &num1, &num2, &num3, &num4, &num5, &num6) != EOF) {
     int yearAccess = year - 1992;
@@ -121,88 +128,50 @@ int main() {
       yearCount[yearAccess].num[num6-1].freq += 1;
       totalInts++;
     }
-    //printf("%s", line);
   }
 
+  // begin output 
   printf("For each year, the frequency of drawn numbers in the Texas Lotto are as follows [1 - 27] :- \n\n");
   printf("Year -> No");
   for (int i = 1; i < 28; i++) { printf("%3d ", i); }
-  printf("\n");
-
+  printf("\n\n");
 
   for (int i = 0; i < sizeof(yearCount)/sizeof(yearCount[0]); i++) {
-    year = yearCount[i].year;
-    printf("%d      ", year);
+    printf("%d      ", yearCount[i].year);
     for (int j = 0; j < 27; j++) {
       printf("%*d ", 3, yearCount[i].num[j].freq);
     }
     printf("\n\n");
   }
 
-  printf("For each year, the frequency of drawn numbers in the Texas Lotto are as follows [28 - 54] :- \n");
-  printf("Year -> No");
-  for (int i = 28; i < 55; i++) { printf("%3d ", i); }
-  printf("\n");
-
-  for (int i = 0; i < sizeof(yearCount)/sizeof(yearCount[0]); i++) {
-    year = yearCount[i].year;
-    printf("%d      ", year);
-    for (int j = 27; j < 54; j++) {
-      printf("%*d ", 3, yearCount[i].num[j].freq);
-    }
-    printf("\n\n");
-  }
-
-  printf("Over All The Data , The Frequency of drawn numbers in the Texas Lotto are [1 - 27] :-\n");
-  printf("Freq. -> No");
+  printf("\nOver All The Data , The Frequency of drawn numbers in the Texas Lotto are [1 - 27] :-\n");
+  printf("%-13s ->", "No");
   for (int i = 1; i < 28; i++) { printf("%4d ", i); }
   printf("\n");
 
   // for correct formatting
-  printf("           ");
+  printf("|\n");
+  printf("%-13s ->", "Frequency");
+
 
   for (int j = 0; j < 27; j++) {
     printf("%4d ", numCount[j].freq);
   }
   printf("\n\n");
 
-  printf("Over All The Data , The Frequency of drawn numbers in the Texas Lotto are [28 - 54] :-\n");
-  printf("Freq. -> No");
-  for (int i = 28; i < 55; i++) { printf("%4d ", i); }
-  printf("\n");
-
-  // for correct formatting
-  printf("           ");
-
-  for (int j = 27; j < 54; j++) {
-    printf("%4d ", numCount[j].freq);
-  }
-  printf("\n\n");
-
+  // sort array by largest frequency
   qsort(numCount, 54, sizeof(struct Nums), cmpfunc); 
 
   printf("The MOST frequent Numbers Drawn in the Texas LOTTO Game from Highest to Lowest [1 - 27] :-\n");
-  printf("Freq. -> No");
+  printf("%-13s ->", "The Number");
   for (int i = 0; i < 27; i++) { printf("%4d ", numCount[i].num); }
   printf("\n");
 
   // for correct formatting
-  printf("           ");
+  printf("|\n");
+  printf("%-13s ->", "Was Drawn");
 
   for (int j = 0; j < 27; j++) {
-    printf("%4d ", numCount[j].freq);
-  }
-  printf("\n\n");
-
-  printf("The MOST frequent Numbers Drawn in the Texas LOTTO Game from Highest to Lowest [28 - 54] :-\n");
-  printf("Freq. -> No");
-  for (int i = 27; i < 54; i++) { printf("%4d ", numCount[i].num); }
-  printf("\n");
-
-  // for correct formatting
-  printf("           ");
-
-  for (int j = 27; j < 54; j++) {
     printf("%4d ", numCount[j].freq);
   }
   printf("\n\n");
